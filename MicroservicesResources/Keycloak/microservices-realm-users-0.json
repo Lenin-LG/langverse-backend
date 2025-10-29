@@ -1,0 +1,63 @@
+{
+  "realm" : "microservices-realm",
+  "users" : [ {
+    "id" : "d052637b-46f0-4f24-b7f3-f4cea9fdb2da",
+    "username" : "lenin327",
+    "firstName" : "Lenin",
+    "lastName" : "Anthony",
+    "email" : "leninlauragarcia@gmail.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1748989882351,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "ca61e0b8-d480-4220-9622-3d64f499c55d",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1748989974826,
+      "secretData" : "{\"value\":\"Sn6rq7kLrwh36LeoEOnDKgWcH960y7kuiOASQ7SqR7ks/3sAtBwHIRDNtBKHx4wOfPPKe9pAYHQQnbw2ThkeNg==\",\"salt\":\"qH7B0kVPQPZegEnZo+z72g==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-microservices-realm", "admin" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "51b8b671-77c3-4341-ada2-7e32034064df",
+    "username" : "sel02",
+    "firstName" : "Sel",
+    "email" : "selalayojulca@gmail.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1748989929989,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "ac6a5245-7e90-4201-8558-4221afd8015c",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1748989954359,
+      "secretData" : "{\"value\":\"v1xc/uC5sPnYNRUYP6cTmxg8idTqrkjtBC1/LxElbm4qiomhE4+XuyfOfmxwFsdFu7WvXdSv/Z7JoR51vqSUow==\",\"salt\":\"hfPgI14ZzVKUxATNDxdXIg==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-microservices-realm", "user" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "499eed83-47fb-4188-8d9b-7d7a442b26d1",
+    "username" : "service-account-microservice-client",
+    "emailVerified" : false,
+    "createdTimestamp" : 1748989088843,
+    "enabled" : true,
+    "totp" : false,
+    "serviceAccountClientId" : "microservice-client",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-microservices-realm" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}

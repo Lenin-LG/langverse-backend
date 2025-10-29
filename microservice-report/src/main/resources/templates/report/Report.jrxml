@@ -1,0 +1,93 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="progressReport" language="java" columnCount="1" pageWidth="595" pageHeight="842" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ea50aa0-ad67-4fa7-b555-07e40c25a38f">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <property name="com.jaspersoft.studio.unit." value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+    <parameter name="user_name" class="java.lang.String"/>
+    <parameter name="Date" class="java.lang.String"/>
+    <parameter name="total_time" class="java.lang.String"/>
+    <parameter name="new_words" class="java.lang.Long"/>
+    <parameter name="imageDir" class="java.lang.String"/>
+    <parameter name="sesion_complet" class="java.lang.Long"/>
+    <parameter name="modalities_used" class="java.lang.String"/>
+    <query language="sql"><![CDATA[]]></query>
+    <background splitType="Stretch"/>
+    <title height="62" splitType="Stretch">
+        <element kind="staticText" uuid="cac65b97-7eaa-447f-802d-45e80ebbfc37" x="130" y="10" width="220" height="30" fontSize="16.0" hTextAlign="Center">
+            <text><![CDATA[Progreso de Aprendizaje]]></text>
+        </element>
+        <element kind="image" uuid="80d7db14-9b58-46be-ab8e-21e83e902cf2" x="350" y="10" width="40" height="31">
+            <expression><![CDATA[$P{imageDir}+"Paper.png"]]></expression>
+        </element>
+        <element kind="image" uuid="7a4ccf62-a5ed-4413-8822-128f0ef2142e" x="-20" y="-20" width="69" height="60">
+            <expression><![CDATA[$P{imageDir}+"learning.png"]]></expression>
+        </element>
+    </title>
+    <pageHeader height="35" splitType="Stretch"/>
+    <columnHeader height="117" splitType="Stretch">
+        <element kind="staticText" uuid="ea084277-1dfb-43d3-9b67-e1f2f053219a" x="100" y="20" width="90" height="27" fontSize="19.0">
+            <text><![CDATA[Usuario : ]]></text>
+        </element>
+        <element kind="textField" uuid="72012c4c-ed8c-46d9-abac-ef4d0845393c" x="210" y="20" width="280" height="31" fontSize="14.0">
+            <expression><![CDATA[$P{user_name}]]></expression>
+        </element>
+        <element kind="staticText" uuid="3d143d61-d2bf-443f-94cd-8a4ddb9747dc" x="100" y="51" width="90" height="27" fontSize="19.0">
+            <text><![CDATA[Fecha : ]]></text>
+        </element>
+        <element kind="textField" uuid="3a6ac858-90c7-4f10-a239-6e1d3eb88f51" x="210" y="50" width="281" height="31" fontSize="16.0">
+            <expression><![CDATA[$P{Date}]]></expression>
+        </element>
+        <element kind="rectangle" uuid="cf546447-48c6-4034-93aa-dc0215d7d09f" mode="Transparent" x="70" y="10" width="420" height="86" forecolor="#129AB5"/>
+    </columnHeader>
+    <detail>
+        <band height="238" splitType="Stretch">
+            <element kind="staticText" uuid="db0686c0-91c2-4636-881c-ad8ed652f6fc" x="79" y="47" width="90" height="20">
+                <text><![CDATA[Total Tiempo : ]]></text>
+            </element>
+            <element kind="staticText" uuid="01dedf14-391e-4ef8-ba34-3d529113d10c" x="79" y="77" width="100" height="20">
+                <text><![CDATA[Palabras nuevas : ]]></text>
+            </element>
+            <element kind="staticText" uuid="3edad03d-f583-4cb5-8a68-c1c80e262ee9" x="79" y="107" width="110" height="18">
+                <text><![CDATA[Sesiones completadas : ]]></text>
+            </element>
+            <element kind="staticText" uuid="1004e30a-9dcc-4423-8d8b-406490c12d97" x="79" y="130" width="101" height="21">
+                <text><![CDATA[Modalidades Usadas : ]]></text>
+            </element>
+            <element kind="staticText" uuid="270ddd13-ca69-4459-b8fd-ccbe3f0f8c6c" x="79" y="5" width="230" height="31" fontSize="19.0">
+                <text><![CDATA[RESUMEN GENERAL :]]></text>
+            </element>
+            <element kind="textField" uuid="a26da665-d9e7-4aaf-bb14-0483b62152fb" x="205" y="47" width="110" height="20">
+                <expression><![CDATA[$P{total_time}]]></expression>
+            </element>
+            <element kind="textField" uuid="33f9c685-344d-4214-ab87-d483f3cee5c8" x="205" y="80" width="110" height="20">
+                <expression><![CDATA[$P{new_words}]]></expression>
+            </element>
+            <element kind="textField" uuid="cd0cdecf-d8a9-44df-8511-45f4c9824e2f" x="205" y="106" width="110" height="20">
+                <expression><![CDATA[$P{sesion_complet}]]></expression>
+            </element>
+            <element kind="textField" uuid="8877f0bd-9bfb-4b86-9e12-e51933a65c58" x="205" y="130" width="110" height="20">
+                <expression><![CDATA[$P{modalities_used}]]></expression>
+            </element>
+        </band>
+    </detail>
+    <columnFooter height="57" splitType="Stretch"/>
+    <pageFooter height="84" splitType="Stretch">
+        <element kind="staticText" uuid="fcb5f885-4395-4590-81a3-888094dcdd56" x="110" y="10" width="120" height="20">
+            <text><![CDATA[learning English.app]]></text>
+        </element>
+        <element kind="staticText" uuid="5cfff144-347a-441c-ac04-77cf275c94ba" x="110" y="40" width="120" height="20">
+            <text><![CDATA[Contact : 999999999]]></text>
+        </element>
+        <element kind="image" uuid="edd9be99-0f82-4f3c-a03d-a0bdfe2f2077" x="470" y="27" width="49" height="49">
+            <expression><![CDATA[$P{imageDir}+"learning.png"]]></expression>
+        </element>
+    </pageFooter>
+    <summary height="42" splitType="Stretch"/>
+</jasperReport>

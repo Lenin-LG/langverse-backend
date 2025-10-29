@@ -1,0 +1,50 @@
+server:
+  port: 8092
+
+aws:
+  access:
+    key: ${AWS_ACCESS_KEY}
+  secret:
+    key: ${AWS_SECRET_KEY}
+  region: ${AWS_REGION}
+  bucket: ${AWS_BUCKET}
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2000MB
+      max-request-size: 2000MB
+  destination:
+    folder: /static/
+  application:
+    name: msvc-movie
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
+  datasource:
+    url: ${MOVIE_DB_URL}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+jwt:
+  auth:
+    converter:
+      principal-attribute: preferred_username
+      resource-id: ${JWT_RESOURCE_ID}
+
+eureka:
+  instance:
+    hostname: msvc-movie
+  client:
+    service-url:
+      defaultZone: http://msvc-eureka:8761/eureka

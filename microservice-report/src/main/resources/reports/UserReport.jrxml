@@ -1,0 +1,61 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="Blank_A4" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5186c51f-1ba1-4bff-9c18-8936682c190b">
+  <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+  <query language="sql"><![CDATA[]]></query>
+  <field name="username" class="java.lang.String"/>
+  <field name="firstName" class="java.lang.String"/>
+  <field name="lastName" class="java.lang.String"/>
+  <field name="email" class="java.lang.String"/>
+  <field name="enabled" class="java.lang.Boolean"/>
+  <background splitType="Stretch"/>
+  <title height="25" splitType="Stretch">
+    <element kind="staticText" uuid="62e97186-2d2d-4834-86e4-082afdecd0e8" x="151" y="-10" width="253" height="30" fontSize="19.0" hTextAlign="Center">
+      <text><![CDATA[REPORTE DE USUARIOS]]></text>
+    </element>
+  </title>
+  <pageHeader height="2" splitType="Stretch"/>
+  <columnHeader height="34" splitType="Stretch">
+    <element kind="staticText" uuid="7060f65b-e310-46fa-b9aa-38bd6040e32e" x="50" y="5" width="60" height="24" fontSize="13.0">
+      <text><![CDATA[Usuario]]></text>
+    </element>
+    <element kind="staticText" uuid="e9a5468d-45b2-4090-a4b8-ee2bc67fa707" x="140" y="0" width="60" height="24" fontSize="13.0">
+      <text><![CDATA[Nombre]]></text>
+    </element>
+    <element kind="staticText" uuid="8f376cbc-cdf0-4421-aa08-c7fb8df444b1" x="230" y="5" width="60" height="24" fontSize="13.0">
+      <text><![CDATA[Apellido]]></text>
+    </element>
+    <element kind="staticText" uuid="21ba0881-585c-4384-8fcf-7f1faf0e55e1" x="320" y="5" width="60" height="24" fontSize="13.0">
+      <text><![CDATA[Email]]></text>
+    </element>
+    <element kind="staticText" uuid="c2736dc7-62d0-4142-bdb0-e21ce6206113" x="400" y="5" width="60" height="24" fontSize="13.0">
+      <text><![CDATA[Activo]]></text>
+    </element>
+    <element kind="break" uuid="a7259595-8616-452c-bd54-397e1d149926" x="0" y="-1" width="547" height="1"/>
+  </columnHeader>
+  <detail>
+    <band height="87" splitType="Stretch">
+      <element kind="textField" uuid="3271715f-4f26-4e84-b70b-02227ee3f273" x="130" y="4" width="69" height="19">
+        <expression><![CDATA[$F{firstName}]]></expression>
+      </element>
+      <element kind="textField" uuid="3ae960b0-e578-4722-9cde-46412bbf0953" x="220" y="4" width="70" height="14">
+        <expression><![CDATA[$F{lastName}]]></expression>
+      </element>
+      <element kind="textField" uuid="a9513790-d8ad-488b-8879-9493993bea6b" x="320" y="3" width="60" height="20">
+        <expression><![CDATA[$F{email}]]></expression>
+      </element>
+      <element kind="textField" uuid="c3eab73f-8236-4094-a123-6455cc527df3" x="390" y="2" width="100" height="22">
+        <expression><![CDATA[$F{enabled} ? "Sí" : "No"]]></expression>
+      </element>
+      <element kind="textField" uuid="5faba504-d29b-4db9-8b09-8cb83226618c" x="30" y="6" width="70" height="14">
+        <expression><![CDATA[$F{username}]]></expression>
+      </element>
+    </band>
+  </detail>
+  <columnFooter splitType="Stretch"/>
+  <pageFooter height="52" splitType="Stretch">
+    <element kind="textField" uuid="22001c08-ff6a-4b1e-8b80-79925c0f0db3" x="40" y="10" width="470" height="30">
+      <expression><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + $V{PAGE_COUNT} + " - Generado: " + new java.util.Date()]]></expression>
+    </element>
+  </pageFooter>
+  <summary splitType="Stretch"/>
+</jasperReport>

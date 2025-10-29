@@ -1,0 +1,82 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: msvc-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: auth
+          uri: lb://msvc-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: movie
+          uri: lb://msvc-movie
+          predicates:
+            - Path=/movies/**
+          filters:
+            - StripPrefix=1
+        - id: music
+          uri: lb://msvc-music
+          predicates:
+            - Path=/music/**
+          filters:
+            - StripPrefix=1
+        - id: notebook
+          uri: lb://msvc-notes
+          predicates:
+            - Path=/notes/**
+          filters:
+            - StripPrefix=1
+        - id: speaking
+          uri: lb://msvc-speaking
+          predicates:
+            - Path=/speaking/**
+          filters:
+            - StripPrefix=1
+        - id: report
+          uri: lb://msvc-report
+          predicates:
+            - Path=/report/**
+          filters:
+            - StripPrefix=1
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
+
+jwt:
+  auth:
+    converter:
+      principal-attribute: preferred_username
+      resource-id: ${JWT_RESOURCE_ID}
+springdoc:
+  swagger-ui:
+    urls:
+      - name: movie
+        url: /movies/v3/api-docs
+      - name: music
+        url: /music/v3/api-docs
+      - name: speaking
+        url: /speaking/v3/api-docs
+      - name: notes
+        url: /notes/v3/api-docs
+      - name: report
+        url: /report/v3/api-docs
+      - name: auth
+        url: /auth/v3/api-docs
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    service-url:
+      defaultZone: http://msvc-eureka:8761/eureka/
+
+

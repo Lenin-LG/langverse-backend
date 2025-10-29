@@ -1,0 +1,12 @@
+server:
+  port : 8096
+
+spring:
+  application:
+    name: msvc-report
+eureka:
+  instance:
+    hostname: msvc-report
+  client:
+    service-url:
+      defaultZone: http://msvc-eureka:8761/eureka

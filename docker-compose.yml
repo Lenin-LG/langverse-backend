@@ -1,0 +1,298 @@
+services:
+
+  ##########################
+  # 🔐 Keycloak + PostgreSQL
+  ##########################
+
+  db-keycloak:
+    container_name: db-keycloak
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: db-keycloak
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - microservices-net
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.4
+    container_name: keycloak
+    command: start-dev --import-realm
+    depends_on:
+      - db-keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_PORT: 8080
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db-keycloak:5432/db-keycloak
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+    volumes:
+      - ./MicroservicesResources/Keycloak:/opt/keycloak/data/import
+    ports:
+      - "9090:8080"
+    networks:
+      - microservices-net
+
+  #####################################
+  # 🐬 MySQL para microservicios con BD
+  #####################################
+
+  mysql-movie:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: moviesdb
+    ports:
+      - "3307:3306"
+    volumes:
+      - movie_data:/var/lib/mysql
+    networks:
+      - microservices-net
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mysql-music:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: musicdb
+    ports:
+      - "3308:3306"
+    volumes:
+      - music_data:/var/lib/mysql
+    networks:
+      - microservices-net
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mysql-notes:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: notedb
+    ports:
+      - "3309:3306"
+    volumes:
+      - notes_data:/var/lib/mysql
+    networks:
+      - microservices-net
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mysql-speaking:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: speakingdb
+    ports:
+      - "3310:3306"
+    volumes:
+      - speaking_data:/var/lib/mysql
+    networks:
+      - microservices-net
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  ##########################
+  # ☕ Spring Boot Services
+  ##########################
+
+  config-server:
+    build: ./microservice-config
+    ports:
+      - "8888:8888"
+    networks:
+      - microservices-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  msvc-eureka:
+    build: ./microservice-eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-net
+    depends_on:
+      - config-server
+
+  gateway:
+    build: ./microservice-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - microservices-net
+    environment:
+      - ISSUER_URI=${ISSUER_URI}
+      - JWT_RESOURCE_ID=${JWT_RESOURCE_ID}
+    depends_on:
+      - msvc-eureka
+      - keycloak
+
+
+  msvc-auth:
+    build: ./microservice-auth
+    ports:
+      - "8091:8091"
+    networks:
+      - microservices-net
+    environment:
+      - ISSUER_URI=${ISSUER_URI}
+      - JWT_CLIENT_SECRET=${JWT_CLIENT_SECRET}
+      - JWT_RESOURCE_ID=${JWT_RESOURCE_ID}
+      - TOKEN_URL=${TOKEN_URL}
+      - TOKEN_VALIDATION_URL=${TOKEN_VALIDATION_URL}
+      - JWK_SET_URI=${JWK_SET_URI}
+      - KEYCLOAK_SERVER_URL=${KEYCLOAK_SERVER_URL}
+      - KEYCLOAK_REALM_NAME=${KEYCLOAK_REALM_NAME}
+      - KEYCLOAK_REALM_MASTER=${KEYCLOAK_REALM_MASTER}
+      - KEYCLOAK_ADMIN_CLI=${KEYCLOAK_ADMIN_CLI}
+      - KEYCLOAK_USER_ADMIN=${KEYCLOAK_USER_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+    depends_on:
+      - keycloak
+      - msvc-eureka
+
+  msvc-movie:
+    build: ./microservice-movie
+    ports:
+      - "8092:8092"
+    networks:
+      - microservices-net
+    depends_on:
+      - mysql-movie
+      - msvc-eureka
+    environment:
+      - SPRING_DATASOURCE_URL=${MOVIE_DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_BUCKET=${AWS_BUCKET}
+      - ISSUER_URI=${ISSUER_URI}
+      - JWT_CLIENT_SECRET=${JWT_CLIENT_SECRET}
+      - JWT_RESOURCE_ID=${JWT_RESOURCE_ID}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8092/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  msvc-music:
+    build: ./microservice-music
+    ports:
+      - "8093:8093"
+    networks:
+      - microservices-net
+    depends_on:
+      - mysql-music
+      - msvc-eureka
+    environment:
+      - SPRING_DATASOURCE_URL=${MUSIC_DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_BUCKET=${AWS_BUCKET_MUSIC}
+      - ISSUER_URI=${ISSUER_URI}
+      - JWT_RESOURCE_ID=${JWT_RESOURCE_ID}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8093/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  msvc-notes:
+    build: ./microservice-notes
+    ports:
+      - "8094:8094"
+    networks:
+      - microservices-net
+    depends_on:
+      - mysql-notes
+      - msvc-eureka
+    environment:
+      - SPRING_DATASOURCE_URL=${NOTES_DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - ISSUER_URI=${ISSUER_URI}
+      - JWT_RESOURCE_ID=${JWT_RESOURCE_ID}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8094/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  msvc-speaking:
+    build: ./microservice-speaking
+    ports:
+      - "8095:8095"
+    networks:
+      - microservices-net
+    depends_on:
+      - mysql-speaking
+      - msvc-eureka
+    environment:
+      - SPRING_DATASOURCE_URL=${SPEAKING_DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - ISSUER_URI=${ISSUER_URI}
+      - JWT_RESOURCE_ID=${JWT_RESOURCE_ID}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8095/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  msvc-report:
+    build: ./microservice-report
+    ports:
+      - "8096:8096"
+    networks:
+      - microservices-net
+    depends_on:
+      - msvc-eureka
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8096/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+###################
+# 🔁 Volúmenes
+###################
+volumes:
+  postgres_data:
+  keycloak_data:
+  movie_data:
+  music_data:
+  notes_data:
+  speaking_data:
+
+###################
+# 🌐 Red compartida
+###################
+networks:
+  microservices-net:
+    driver: bridge
+

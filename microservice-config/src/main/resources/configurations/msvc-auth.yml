@@ -1,0 +1,36 @@
+server:
+  port: 8091
+
+jwt:
+  auth:
+    converter:
+      principal-attribute: preferred_username
+      resource-id: ${JWT_RESOURCE_ID}
+      client-secret: ${JWT_CLIENT_SECRET}
+      token-url: ${TOKEN_URL}
+      token-validation: ${TOKEN_VALIDATION_URL}
+
+spring:
+  application:
+    name: msvc-auth
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
+          jwk-set-uri: ${JWK_SET_URI}
+
+logging:
+  level:
+    org:
+      keycloak: DEBUG
+
+eureka:
+  instance:
+    hostname: msvc-auth
+  client:
+    service-url:
+      defaultZone: http://msvc-eureka:8761/eureka
+
+
+
