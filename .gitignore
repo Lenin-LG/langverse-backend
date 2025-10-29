@@ -1,18 +1,18 @@
-# Ignorar la configuración de IntelliJ IDEA
+# Ignorar configuración de IntelliJ IDEA
 .idea/
 *.iml
 
-# Ignorar archivos temporales del sistema
+# Ignorar logs y archivos temporales
 *.log
 *.tmp
 *.swp
 
-# Ignorar archivos de Maven EXCEPTO los .jar
-# (esto ignora todo en target/ menos los .jar)
-target/*
-!target/**/*.jar
+# Ignorar todo target excepto los .jar
+*/target/*
+!*/target/**/*.jar
+!*/target/*.jar
 
-# Ignorar archivos de Eclipse (si usas)
+# Ignorar archivos de Eclipse
 *.classpath
 *.project
 *.settings/
