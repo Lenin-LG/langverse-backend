@@ -104,6 +104,7 @@ AWS_BUCKET_MUSIC=<YOUR_BUCKET_MUSIC>
 | **AWS S3**               | Multimedia files                              |
 | **Docker Compose**       | Container orchestration                     |
 | **FFmpeg**               | Audio/Video Processing (microservice-movie) |
+| **JasperReports**        | Dynamic report generation in PDF/Excel formats |
 | **Retrofit (Android)**   | Consuming APIs from the mobile app               |
 
 ---
